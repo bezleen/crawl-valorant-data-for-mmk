@@ -54,7 +54,7 @@ class ValorantCrawl(object):
 
     def write_error_url(self, url):
         with open('data/error_url.txt', 'a') as f:
-            f.writelines(url)
+            f.writelines(f"{url},")
 
     def exec_crawl(self, url):
         self.driver.get(url)
