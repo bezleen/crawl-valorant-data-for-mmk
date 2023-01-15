@@ -38,13 +38,18 @@ class ValorantCrawl(object):
     def crawl_default(self, from_index=None):
         with open('data/urls.json', 'r') as f:
             dict_urls = json.loads(f.read())
+        new_dict_urls = dict_urls
+        if isinstance(dict_urls, list):
+            new_dict_urls = {}
+            for index, value in enumerate(dict_urls):
+                py_.set_(new_dict_urls, f"{index}", value)
         if from_index:
-            for index in range(from_index, len(list(dict_urls.keys()))):
-                value = py_.get(dict_urls, f"{index}")
+            for index in range(from_index, len(list(new_dict_urls.keys()))):
+                value = py_.get(new_dict_urls, f"{index}")
                 print(f"Crawling index={index}, value={value}")
                 self.exec_crawl(value)
             return
-        for index, value in dict_urls.items():
+        for index, value in new_dict_urls.items():
             print(f"Crawling index={index}, value={value}")
             try:
                 self.exec_crawl(value)
@@ -65,7 +70,7 @@ class ValorantCrawl(object):
         # print(table)
         # table_datas = table.find_elements(By.CSS_SELECTOR, "div:nth-child(2) > div")
         len_rows = len(table_datas)
-        if len_rows < 20:
+        if len_rows < 2:
             self.write_error_url(url)
             return
         # print(len_rows)
