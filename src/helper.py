@@ -141,8 +141,56 @@ def random_data():
                     f.close()
 
 
+def combine_csv():
+    with open('data/label2.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        count = 0
+        header = True
+        id = 180853
+        for row in csv_reader:
+            if header:
+                header = False
+                continue
+            print(count)
+            count += 1
+            kd = float(row[1])
+            kill = float(row[2])
+            death = float(row[3])
+            assistant = float(row[4])
+            win_rate = float(row[5])
+            pick_rate = float(row[6])
+            avg_score = float(row[7])
+            first_blood_rate = float(row[8])
+            label = int(row[9])
+            data = {
+                "id": id,
+                "KD": kd,
+                "Kill": kill,
+                "Death": death,
+                "Assistant": assistant,
+                "WinRate": win_rate,
+                "PickRate": pick_rate,
+                "AvgScore": avg_score,
+                "FirstBloodRate": first_blood_rate,
+                "label": label
+            }
+            file_path = 'data/label1.csv'
+            if not exists(file_path):
+                with open(file_path, 'a') as f:
+                    writer_obj = writer(f)
+                    writer_obj.writerow(list(data.keys()))
+                    f.close()
+            with open(file_path, 'a') as f:
+                dictwriter_obj = DictWriter(f, fieldnames=list(data.keys()))
+                dictwriter_obj.writerow(data)
+                f.close()
+            # after append
+            id += 1
+
+
 if __name__ == '__main__':
     # generate_url()
     # generate_url_new()
 
-    random_data()
+    # random_data()
+    combine_csv()
